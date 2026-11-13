@@ -7,8 +7,8 @@ bounded, signed HTTP ticks; it does not contain the application or catalog.
 
 ## Included files
 
-- `.github/workflows/mobile-sentrix-import.yml` — scheduled and manual entry
-  points, with a test-only job and a separately protected production job.
+- `.github/workflows/mobile-sentrix-import.yml` — manual-only entry points (legacy scheduled cron disabled November 12, 2026),
+  with a test-only job and a separately protected production job.
 - `scripts/mobilesentrix-worker-caller.mjs` — sequential HMAC caller with
   request deadlines and bounded execution.
 - `tests/` — offline caller and workflow safety tests.
@@ -53,11 +53,10 @@ README, test fixtures, or command-line arguments.
 
 ## How it runs
 
-The workflow polls every six hours at minute 17. GitHub can delay scheduled
-events under load, and scheduled workflows in public repositories may be
-disabled after 60 days without repository activity. Check the Actions page
-regularly; if GitHub disables this workflow, re-enable it in the workflow's
-Actions menu before relying on it again.
+This legacy repository has **no automatic schedule**. Its former six-hour cron
+was removed to avoid duplicate production callers. The newer quantity-only
+worker repository owns automatic inventory ticks. This legacy workflow can
+still be invoked manually if separately authorized.
 
 Polling alone does not authorize a refresh. The application's persisted Admin
 schedule must be enabled and due. When it is disabled or not due, the endpoint
